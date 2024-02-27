@@ -10,6 +10,7 @@ public class SimpleChainedCompletableFutureDemo {
   public static void main(String[] args) {
     System.out.println("Running a chained business process\n");
     ExecutorService executor = Executors.newFixedThreadPool(5);
+    // Supply a new CompletableFuture to make an airline reservation
     CompletableFuture.supplyAsync(
             () -> {
               try {
@@ -34,6 +35,7 @@ public class SimpleChainedCompletableFutureDemo {
             },
             executor)
         .thenAccept(confirmation -> Printer.printResult(String.valueOf(confirmation)))
+        // Add a new CompletableFuture to make a car rental reservation
         .thenApplyAsync(
             result -> {
               try {
