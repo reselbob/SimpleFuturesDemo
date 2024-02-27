@@ -2,49 +2,44 @@ package futuresdemo;
 
 import futuresdemo.simple.Reservation;
 import futuresdemo.utils.DateConverter;
+import futuresdemo.utils.Printer;
+
 import java.util.concurrent.*;
 
 public class SimpleFutureDemo {
   public static void main(String[] args) throws InterruptedException, ExecutionException {
-    Future<String> airlineFuture = new Reservation().makeReservation("Airline");
+    ExecutorService executor = Executors.newFixedThreadPool(5);
 
+    Future<String> airlineFuture = executor.submit(() -> new Reservation().makeReservation("Airline"));
     while (!airlineFuture.isDone()) {
-      printWaitingMessage("Airline");
+      Printer.printWaitingMessage("Airline");
       Thread.sleep(300);
     }
 
-    printResult(airlineFuture.get());
+    Printer.printResult(airlineFuture.get());
 
-    Future<String> hotelFuture = new Reservation().makeReservation("Hotel");
+    Future<String> hotelFuture = executor.submit(() -> new Reservation().makeReservation("Hotel"));
 
     while (!hotelFuture.isDone()) {
-      printWaitingMessage("Hotel");
+      Printer.printWaitingMessage("Hotel");
       Thread.sleep(300);
     }
 
-    printResult(hotelFuture.get());
+    Printer.printResult(hotelFuture.get());
 
-    Future<String> carRentalFuture = new Reservation().makeReservation("Car Rental");
+    Future<String> carRentalFuture = executor.submit(() -> new Reservation().makeReservation("Car Rental"));
 
     while (!carRentalFuture.isDone()) {
-      printWaitingMessage("Car Rental");
+      Printer.printWaitingMessage("Car Rental");
       Thread.sleep(300);
     }
 
-    printResult(carRentalFuture.get());
+    Printer.printResult(carRentalFuture.get());
+
+    executor.shutdown();
 
     System.exit(0);
   }
 
-  private static void printResult(String travelServiceMessage) {
-    System.out.printf(
-        "--------%nResult: %s at %s%n--------%n",
-        travelServiceMessage, DateConverter.convertToHumanReadableTime(System.currentTimeMillis()));
-  }
 
-  private static void printWaitingMessage(String travelServiceMessage) {
-    System.out.printf(
-        "Waiting for %s at %s %n",
-        travelServiceMessage, DateConverter.convertToHumanReadableTime(System.currentTimeMillis()));
-  }
 }

@@ -2,12 +2,13 @@ package futuresdemo;
 
 import futuresdemo.simple.OnlineReservation;
 import futuresdemo.utils.DateConverter;
+import futuresdemo.utils.Printer;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class SimpleCompletableFutureDemo {
+public class SimpleChainedCompletableFutureDemo {
     public static void main(String[] args) {
         System.out.println("Running a chained business process\n");
         ExecutorService executor = Executors.newFixedThreadPool(5);
@@ -19,7 +20,7 @@ public class SimpleCompletableFutureDemo {
                     }
                 }, executor)
                 .thenAccept(confirmation -> {
-                    printResult(String.valueOf(confirmation));
+                    Printer.printResult(String.valueOf(confirmation));
                 })
                 // Add a new CompletableFuture to make a hotel reservation
                 .thenApplyAsync(result -> {
@@ -29,7 +30,7 @@ public class SimpleCompletableFutureDemo {
                         throw new RuntimeException(e);
                     }
                 }, executor)
-                .thenAccept(confirmation -> printResult(String.valueOf(confirmation)))
+                .thenAccept(confirmation -> Printer.printResult(String.valueOf(confirmation)))
                 .thenApplyAsync(result -> {
                     try {
                         return new OnlineReservation().makeReservation("Car Rental");
@@ -38,14 +39,9 @@ public class SimpleCompletableFutureDemo {
                     }
                 }, executor)
                 .thenAccept(confirmation -> {
-                    printResult(String.valueOf(confirmation));
+                    Printer.printResult(String.valueOf(confirmation));
                     System.exit(0);
                 });
     }
 
-    private static void printResult(String travelServiceMessage) {
-        System.out.printf(
-                "--------%nResult: %s at %s%n--------%n",
-                travelServiceMessage, DateConverter.convertToHumanReadableTime(System.currentTimeMillis()));
-    }
 }
