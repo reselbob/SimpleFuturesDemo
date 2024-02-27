@@ -8,7 +8,7 @@ import java.util.concurrent.*;
 
 public class SimpleFutureDemo {
   public static void main(String[] args) throws InterruptedException, ExecutionException {
-    ExecutorService executor = Executors.newFixedThreadPool(5);
+    ExecutorService executor = Executors.newFixedThreadPool(3);
 
     Future<String> airlineFuture = executor.submit(() -> new Reservation().makeReservation("Airline"));
     while (!airlineFuture.isDone()) {
