@@ -1,9 +1,7 @@
 package futuresdemo;
 
-import futuresdemo.simple.Reservation;
+import futuresdemo.simple.TimedReservation;
 import futuresdemo.utils.Printer;
-
-import java.util.List;
 import java.util.concurrent.*;
 
 public class SimpleParallelCompletableFutureDemo {
@@ -15,7 +13,7 @@ public class SimpleParallelCompletableFutureDemo {
         CompletableFuture.supplyAsync(
             () -> {
               try {
-                return new Reservation().makeReservation("Airline");
+                return new TimedReservation().makeReservation("Airline");
               } catch (InterruptedException e) {
                 throw new RuntimeException(e);
               }
@@ -26,7 +24,7 @@ public class SimpleParallelCompletableFutureDemo {
         CompletableFuture.supplyAsync(
             () -> {
               try {
-                return new Reservation().makeReservation("Hotel");
+                return new TimedReservation().makeReservation("Hotel");
               } catch (InterruptedException e) {
                 throw new RuntimeException(e);
               }
@@ -37,13 +35,15 @@ public class SimpleParallelCompletableFutureDemo {
         CompletableFuture.supplyAsync(
             () -> {
               try {
-                return new Reservation().makeReservation("Car Rental");
+                return new TimedReservation().makeReservation("Car Rental");
               } catch (InterruptedException e) {
                 throw new RuntimeException(e);
               }
             },
             executor);
 
+   // Wait for all the CompletableFutures to complete
+    CompletableFuture.allOf(airlineFuture, hotelFuture, carRentalFuture).join();
 
     Printer.printResult(String.valueOf(airlineFuture.get()));
     Printer.printResult(String.valueOf(hotelFuture.get()));

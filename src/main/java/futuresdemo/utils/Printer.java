@@ -7,6 +7,12 @@ public class Printer {
         travelServiceMessage, DateConverter.convertToHumanReadableTime(System.currentTimeMillis()));
   }
 
+  public static void printFineGrainResult(String travelServiceMessage) {
+    System.out.printf(
+        "--------%nResult: %s at %s%n--------%n",
+        travelServiceMessage, FineGrainDateConverter.convertToHumanReadableTime(System.currentTimeMillis()));
+  }
+
   public static void printWaitingMessage(String travelServiceMessage) {
     System.out.printf(
         "Waiting for %s at %s %n",
