@@ -88,10 +88,12 @@ Result: Car Rental is confirmed at 2024-02-26 22:25:34
 
 ## Running the Chained Sequential CompletableFutures use case:
 
-Execute the following code in a terminal window to run the Chained Commerce use case code:
+Execute the following code in a terminal window to run a set of CompletableFutures that are chained together in a sequential manner:
 
 ```bash
-mvn exec:java -Dexec.mainClass="futuresdemo.SimpleCompletableFutureDemo"
+
+```bash
+mvn exec:java -Dexec.mainClass="futuresdemo.SimpleChainedCompletableFutureDemo"
 ```
 
 You'll get output similar to the following:
@@ -108,5 +110,38 @@ Result: Hotel is confirmed at 2024-02-26 22:27:48
 --------
 Result: Car Rental is confirmed at 2024-02-26 22:27:49
 --------
+```
 
+## Running the CompletableFutures in parallel:
+
+Execute the following code in a terminal window to run a set of CompletableFutures in parallel:
+
+```bash
+
+```bash
+mvn exec:java -Dexec.mainClass="futuresdemo.SimpleParallelCompletableFutureDemo"
+```
+
+You'll get output similar to the following:
+
+```text
+Running a set of simple Parallel CompletableFutures
+
+Making a reservation for Hotel at 2024-03-04 22:49:41.774
+Making a reservation for Airline at 2024-03-04 22:49:41.774
+Making a reservation for Car Rental at 2024-03-04 22:49:41.774
+Ending a reservation for Hotel at 2024-03-04 22:49:42.832
+Ending a reservation for Car Rental at 2024-03-04 22:49:42.831
+Ending a reservation for Airline at 2024-03-04 22:49:42.832
+--------
+Result: Airline is confirmed at 2024-03-04 22:49:42
+--------
+--------
+Result: Hotel is confirmed at 2024-03-04 22:49:42
+--------
+--------
+Result: Car Rental is confirmed at 2024-03-04 22:49:42
+--------
+
+Process finished with exit code 0
 ```
